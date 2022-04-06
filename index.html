@@ -1,0 +1,628 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<head><meta charset="UTF-8" /><script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script><script>class RocketLazyLoadScripts{constructor(e){this.triggerEvents=e,this.eventOptions={passive:!0},this.userEventListener=this.triggerListener.bind(this),this.delayedScripts={normal:[],async:[],defer:[]},this.allJQueries=[]}_addUserInteractionListener(e){this.triggerEvents.forEach((t=>window.addEventListener(t,e.userEventListener,e.eventOptions)))}_removeUserInteractionListener(e){this.triggerEvents.forEach((t=>window.removeEventListener(t,e.userEventListener,e.eventOptions)))}triggerListener(){this._removeUserInteractionListener(this),"loading"===document.readyState?document.addEventListener("DOMContentLoaded",this._loadEverythingNow.bind(this)):this._loadEverythingNow()}async _loadEverythingNow(){this._delayEventListeners(),this._delayJQueryReady(this),this._handleDocumentWrite(),this._registerAllDelayedScripts(),this._preloadAllScripts(),await this._loadScriptsFromList(this.delayedScripts.normal),await this._loadScriptsFromList(this.delayedScripts.defer),await this._loadScriptsFromList(this.delayedScripts.async),await this._triggerDOMContentLoaded(),await this._triggerWindowLoad(),window.dispatchEvent(new Event("rocket-allScriptsLoaded"))}_registerAllDelayedScripts(){document.querySelectorAll("script[type=rocketlazyloadscript]").forEach((e=>{e.hasAttribute("src")?e.hasAttribute("async")&&!1!==e.async?this.delayedScripts.async.push(e):e.hasAttribute("defer")&&!1!==e.defer||"module"===e.getAttribute("data-rocket-type")?this.delayedScripts.defer.push(e):this.delayedScripts.normal.push(e):this.delayedScripts.normal.push(e)}))}async _transformScript(e){return await this._requestAnimFrame(),new Promise((t=>{const n=document.createElement("script");let r;[...e.attributes].forEach((e=>{let t=e.nodeName;"type"!==t&&("data-rocket-type"===t&&(t="type",r=e.nodeValue),n.setAttribute(t,e.nodeValue))})),e.hasAttribute("src")?(n.addEventListener("load",t),n.addEventListener("error",t)):(n.text=e.text,t()),e.parentNode.replaceChild(n,e)}))}async _loadScriptsFromList(e){const t=e.shift();return t?(await this._transformScript(t),this._loadScriptsFromList(e)):Promise.resolve()}_preloadAllScripts(){var e=document.createDocumentFragment();[...this.delayedScripts.normal,...this.delayedScripts.defer,...this.delayedScripts.async].forEach((t=>{const n=t.getAttribute("src");if(n){const t=document.createElement("link");t.href=n,t.rel="preload",t.as="script",e.appendChild(t)}})),document.head.appendChild(e)}_delayEventListeners(){let e={};function t(t,n){!function(t){function n(n){return e[t].eventsToRewrite.indexOf(n)>=0?"rocket-"+n:n}e[t]||(e[t]={originalFunctions:{add:t.addEventListener,remove:t.removeEventListener},eventsToRewrite:[]},t.addEventListener=function(){arguments[0]=n(arguments[0]),e[t].originalFunctions.add.apply(t,arguments)},t.removeEventListener=function(){arguments[0]=n(arguments[0]),e[t].originalFunctions.remove.apply(t,arguments)})}(t),e[t].eventsToRewrite.push(n)}function n(e,t){let n=e[t];Object.defineProperty(e,t,{get:()=>n||function(){},set(r){e["rocket"+t]=n=r}})}t(document,"DOMContentLoaded"),t(window,"DOMContentLoaded"),t(window,"load"),t(window,"pageshow"),t(document,"readystatechange"),n(document,"onreadystatechange"),n(window,"onload"),n(window,"onpageshow")}_delayJQueryReady(e){let t=window.jQuery;Object.defineProperty(window,"jQuery",{get:()=>t,set(n){if(n&&n.fn&&!e.allJQueries.includes(n)){n.fn.ready=n.fn.init.prototype.ready=function(t){e.domReadyFired?t.bind(document)(n):document.addEventListener("rocket-DOMContentLoaded",(()=>t.bind(document)(n)))};const t=n.fn.on;n.fn.on=n.fn.init.prototype.on=function(){if(this[0]===window){function e(e){return e.split(" ").map((e=>"load"===e||0===e.indexOf("load.")?"rocket-jquery-load":e)).join(" ")}"string"==typeof arguments[0]||arguments[0]instanceof String?arguments[0]=e(arguments[0]):"object"==typeof arguments[0]&&Object.keys(arguments[0]).forEach((t=>{delete Object.assign(arguments[0],{[e(t)]:arguments[0][t]})[t]}))}return t.apply(this,arguments),this},e.allJQueries.push(n)}t=n}})}async _triggerDOMContentLoaded(){this.domReadyFired=!0,await this._requestAnimFrame(),document.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this._requestAnimFrame(),window.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this._requestAnimFrame(),document.dispatchEvent(new Event("rocket-readystatechange")),await this._requestAnimFrame(),document.rocketonreadystatechange&&document.rocketonreadystatechange()}async _triggerWindowLoad(){await this._requestAnimFrame(),window.dispatchEvent(new Event("rocket-load")),await this._requestAnimFrame(),window.rocketonload&&window.rocketonload(),await this._requestAnimFrame(),this.allJQueries.forEach((e=>e(window).trigger("rocket-jquery-load"))),window.dispatchEvent(new Event("rocket-pageshow")),await this._requestAnimFrame(),window.rocketonpageshow&&window.rocketonpageshow()}_handleDocumentWrite(){const e=new Map;document.write=document.writeln=function(t){const n=document.currentScript,r=document.createRange(),i=n.parentElement;let o=e.get(n);void 0===o&&(o=n.nextSibling,e.set(n,o));const a=document.createDocumentFragment();r.setStart(a,0),a.appendChild(r.createContextualFragment(t)),i.insertBefore(a,o)}}async _requestAnimFrame(){return new Promise((e=>requestAnimationFrame(e)))}static run(){const e=new RocketLazyLoadScripts(["keydown","mousemove","touchmove","touchstart","touchend","wheel"]);e._addUserInteractionListener(e)}}RocketLazyLoadScripts.run();</script>
+	
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="pingback" href="https://wideo.co/xmlrpc.php" />
+
+	<script type="rocketlazyloadscript" data-rocket-type="text/javascript">
+		document.documentElement.className = 'js';
+	</script>
+
+	<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+	<!-- Trang web này được tối ưu hóa với plugin Yoast SEO v17.4 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Đậu Đậu</title></title>
+	<meta name="description" content="Chuyển văn bản thành giọng nói với phần mềm chuyển văn bản thành giọng nói trực tuyến này. &#039; dễ dàng và miễn phí. Viết tin nhắn của bạn và tải xuống dưới dạng tệp mp3." />
+	<link rel="canonical" href="https://www.daudau.tk/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Phần mềm chuyển văn bản thành giọng nói miễn phí (TTS) - Đậu Đậu" />
+	<meta property="og:description" content="Chuyển văn bản thành giọng nói với phần mềm chuyển văn bản thành giọng nói trực tuyến này. &#039; dễ dàng và miễn phí. Viết tin nhắn của bạn và tải xuống dưới dạng tệp mp3." />
+	<meta property="og:url" content="https://www.daudau.tk/" />
+	<meta property="og:site_name" content="Đậu Đậu 5.0" />
+	<meta property="og:image" content="https://i.pinimg.com/736x/f3/e1/7a/f3e17aa38525832917718a932c820e28.jpg" />
+	
+	<meta content="Wideo Divi Child Theme v.1.0.0" name="generator"/>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+ /* chân trang */ 
+ .footer {
+overflow: hidden;
+background-color: Red;
+float: left;
+display: block;
+color: White;
+text-align: center;
+padding: 6px 10px;
+ width: 100%;
+}
+/* thi?t l?p style cho th? a */
+ .pagination a {
+   color: White;
+   float: left;
+   padding: 8px 16px;
+   text-decoration: none;
+   transition: background-color .3s;
+ }
+/* thi?t l?p style cho class active */
+ .pagination a.active {
+   background-color: dodgerblue;
+   color: Black;
+ }
+/* thêm màu n?n khi ngư?i dùng hover vào class không active */
+ .pagination a:hover:not(.active) {
+   background-color: #ddd;
+ }
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/css/dist/block-library/style.min.css?ver=5.8.3' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-components-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/css/dist/components/style.min.css?ver=5.8.3' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-block-editor-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/css/dist/block-editor/style.min.css?ver=5.8.3' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-nux-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/css/dist/nux/style.min.css?ver=5.8.3' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-reusable-blocks-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/css/dist/reusable-blocks/style.min.css?ver=5.8.3' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-editor-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/css/dist/editor/style.min.css?ver=5.8.3' type='text/css' media='all' />
+<link data-minify="1" rel='stylesheet' id='mrkwp_faq_list-cgb-style-css-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/plugins/divi-framework-faq-premium/dist/blocks.style.build.css?ver=1645903777' type='text/css' media='all' />
+<link data-minify="1" rel='stylesheet' id='cptch_stylesheet-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/plugins/captcha/css/front_end_style.css?ver=1645903777' type='text/css' media='all' />
+<link data-minify="1" rel='stylesheet' id='cptch_desktop_style-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/plugins/captcha/css/desktop_style.css?ver=1645903777' type='text/css' media='all' />
+<link data-minify="1" rel='stylesheet' id='contact-form-7-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=1645903777' type='text/css' media='all' />
+<link data-minify="1" rel='stylesheet' id='et_monarch-css-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/plugins/monarch/css/style.css?ver=1645903777' type='text/css' media='all' />
+<link data-minify="1" rel='stylesheet' id='et-gf-open-sans-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/cache/perfmatters/wideo.co/fonts/27ea6b5aea31.google-fonts.css?ver=1645903777' type='text/css' media='all' />
+<link data-minify="1" rel='stylesheet' id='et-divi-open-sans-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/cache/perfmatters/wideo.co/fonts/66e861c2c308.google-fonts.css?ver=1645903777' type='text/css' media='all' />
+<link data-minify="1" rel='stylesheet' id='sb_dpb_custom_css-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/plugins/divi_popup_builder/style.css?ver=1645903777' type='text/css' media='all' />
+<link data-minify="1" rel='stylesheet' id='sb_dpb_colorbox_css-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/plugins/divi_popup_builder/colorbox/example2/colorbox.css?ver=1645903785' type='text/css' media='all' />
+<link data-minify="1" rel='stylesheet' id='divi-style-parent-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/Divi/style-static.min.css?ver=1645903778' type='text/css' media='all' />
+<link data-minify="1" rel='stylesheet' id='divi-style-css'  href='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/wideo-Divi/style.css?ver=1645903778' type='text/css' media='all' />
+<style id='rocket-lazyload-inline-css' type='text/css'>
+.rll-youtube-player{position:relative;padding-bottom:56.23%;height:0;overflow:hidden;max-width:100%;}.rll-youtube-player iframe{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;background:0 0}.rll-youtube-player img{bottom:0;display:block;left:0;margin:auto;max-width:100%;width:100%;position:absolute;right:0;top:0;border:none;height:auto;cursor:pointer;-webkit-transition:.4s all;-moz-transition:.4s all;transition:.4s all}.rll-youtube-player img:hover{-webkit-filter:brightness(75%)}.rll-youtube-player .play{height:72px;width:72px;left:50%;top:50%;margin-left:-36px;margin-top:-36px;position:absolute;background:url(https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/plugins/wp-rocket/assets/img/youtube.png) no-repeat;cursor:pointer}
+</style>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/js/jquery/jquery.min.js?ver=3.6.0' id='jquery-core-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2' id='jquery-migrate-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/plugins/divi_module_menu/script.js?ver=1645903778' id='sb_mod_menu_js-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/wideo-Divi/js/custom-video-templates.js?ver=1645903778' id='video-templates-script-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/plugins/divi_popup_builder/colorbox/jquery.colorbox-min.js?ver=5.8.3' id='sb_dpb_colorbox_js-js' defer></script>
+<link rel="https://api.w.org/" href="https://wideo.co/wp-json/" /><link rel="alternate" type="application/json" href="https://wideo.co/wp-json/wp/v2/pages/20784" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://wideo.co/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='shortlink' href='https://wideo.co/?p=20784' />
+<link rel="alternate" type="application/json+oembed" href="https://wideo.co/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwideo.co%2Ftext-to-speech%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://wideo.co/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwideo.co%2Ftext-to-speech%2F&#038;format=xml" />
+<!-- start Simple Custom CSS and JS -->
+<!-- Añade código HTML a la cabecera o pie de página.
+
+Por ejemplo, puedes usar el siguiente código para cargar la biblioteca jQuery desde la CDN de Google:
+<script type="rocketlazyloadscript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+o el siguiente para cargar la biblioteca Bootstrap desde MaxCDN:
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+-- Fin del comentario --> 
+<meta name="google-site-verification" content="ZesFdnDAwT4ctb-OKVe_Sa75WwlmQ8jKc81v-bZbyyI" />
+<!-- end Simple Custom CSS and JS -->
+<!-- start Simple Custom CSS and JS -->
+<!-- Añade código HTML a la cabecera o pie de página.
+
+Por ejemplo, puedes usar el siguiente código para cargar la biblioteca jQuery desde la CDN de Google:
+<script type="rocketlazyloadscript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+o el siguiente para cargar la biblioteca Bootstrap desde MaxCDN:
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+-- kết thúc bình luận--> 
+
+<link data-minify="1" href="https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/vi-lazyload.min.css?ver=1645903778" rel="stylesheet">
+<script data-minify="1" src="https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/vi-lazyload.min.js?ver=1645903778" defer><!-- end Simple Custom CSS and JS -->
+<link rel='dns-prefetch' href='https://cdn.ampproject.org'/>
+<!--BEGIN: TRACKING CODE MANAGER BY INTELLYWP.COM IN HEAD//-->
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NV67WG6');</script>
+<!-- Kết thúc Trình quản lý thẻ của Google -->
+<!-- Mã Pixel Facebook -->
+<script type="rocketlazyloadscript">
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '320637998127921');
+  fbq('track', 'PageView');
+</script>
+
+<!-- Kết thúc mã Pixel Facebook -->
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript">
+(function(e,t){var n=e.amplitude||{_q:[],_iq:{}};var r=t.createElement("script")
+;r.type="text/javascript";r.async=true
+;r.src="https://cdn.amplitude.com/libs/amplitude-4.0.0-min.gz.js"
+;r.onload=function(){if(e.amplitude.runQueuedFunctions){
+e.amplitude.runQueuedFunctions()}else{
+console.log("[Amplitude] Error: could not load SDK")}}
+;var i=t.getElementsByTagName("script")[0];i.parentNode.insertBefore(r,i)
+;function s(e,t){e.prototype[t]=function(){
+this._q.push([t].concat(Array.prototype.slice.call(arguments,0)));return this}}
+var o=function(){this._q=[];return this}
+;var a=["add","append","clearAll","prepend","set","setOnce","unset"]
+;for(var u=0;u<a.length;u++){s(o,a[u])}n.Identify=o;var c=function(){this._q=[]
+;return this}
+;var l=["setProductId","setQuantity","setPrice","setRevenueType","setEventProperties"]
+;for(var p=0;p<l.length;p++){s(c,l[p])}n.Revenue=c
+;var d=["init","logEvent","logRevenue","setUserId","setUserProperties","setOptOut","setVersionName","setDomain","setDeviceId","setGlobalUserProperties","identify","clearUserProperties","setGroup","logRevenueV2","regenerateDeviceId","logEventWithTimestamp","logEventWithGroups","setSessionId"]
+;function v(e){function t(t){e[t]=function(){
+e._q.push([t].concat(Array.prototype.slice.call(arguments,0)))}}
+for(var n=0;n<d.length;n++){t(d[n])}}v(n);n.getInstance=function(e){
+e=(!e||e.length===0?"$default_instance":e).toLowerCase()
+;if(!n._iq.hasOwnProperty(e)){n._iq[e]={_q:[]};v(n._iq[e])}return n._iq[e]}
+;e.amplitude=n})(window,document);
+
+amplitude.getInstance().init("8b9fe25b9c9fcc062243e6b95b0964a6");
+</script>
+<!--END: https://wordpress.org/plugins/tracking-code-manager IN HEAD//--><style type="text/css" id="et-social-custom-css">
+
+			</style><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><link rel="shortcut icon" href="https://raw.githubusercontent.com/DauDau432/App/main/%E1%BA%A2nh/icon%20%C4%90%C4%90..ico" /><!-- <meta name="google-site-verification" content="5-6BGjp6InpEMoEqVAkoh6hc-8_dPdlRUK2i2rdrrm8" /> -->
+<!--<meta name="google-site-verification" content="Gl881yTJzEU1bofo0guPVqO3YGRU_pRksnI7EX4KNAY" /> -->
+
+<script type="rocketlazyloadscript">   
+	let cjParam = new URLSearchParams(document.location.search.substring(1)).get("cjevent");
+	if ( cjParam ) document.cookie = "cjevent=" + cjParam + ";path=/;domain=wideo.co;max-age=3888000";
+</script>
+
+<link rel="stylesheet" id="et-core-unified-20784-cached-inline-styles" href="https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/et-cache/20784/et-core-unified-20784.min.css?ver=1645983094" /><noscript><style id="rocket-lazyload-nojs-css">.rll-youtube-player, [data-lazy-src]{display:none !important;}</style></noscript></head>
+<body class="page-template-default page page-id-20784 et_monarch transparent-header-dark et_pb_button_helper_class et_fixed_nav et_show_nav et_primary_nav_dropdown_animation_fade et_secondary_nav_dropdown_animation_fade et_header_style_left et_pb_svg_logo et_pb_footer_columns4 et_cover_background et_pb_gutter osx et_pb_gutters3 et_pb_pagebuilder_layout et_no_sidebar et_divi_theme et-db">
+	<div id="page-container">
+
+
+			<header id="main-header" data-height-onload="66">
+			<div class="container clearfix et_menu_container">
+							<div class="logo_container">
+					<span class="logo_helper"></span>
+					<a href="https://www.daudau.tk/"><strong>
+						Đậu Đậu 5.0
+					</strong>
+					</a>
+				</div>
+							<div id="et-top-navigation" data-height="66" data-fixed-height="42">
+											<nav id="top-menu-nav">
+						<ul id="top-menu" class="nav">
+<li id="menu-item-13309" class="header-cta menu-item menu-item-type-custom menu-item-object-custom menu-item-13309"><a href="https://www.facebook.com/daudau.432/">facebook</a></li>
+
+<li id="menu-item-13309" class="header-cta menu-item menu-item-type-custom menu-item-object-custom menu-item-13309"><a href="https://www.youtube.com/channel/UCly-jPYF0jWZS12IdyVZqsg">YOUTUBE</a></li>
+
+<li id="menu-item-13309" class="header-cta menu-item menu-item-type-custom menu-item-object-custom menu-item-13309"><a href="https://github.com/DauDau432">GITHUB</a></li>
+
+<li id="menu-item-13309" class="header-cta menu-item menu-item-type-custom menu-item-object-custom menu-item-13309"><a href="https://daudau02.tk/">mua vpn</a></li>
+
+<li id="menu-item-13309" class="header-cta menu-item menu-item-type-custom menu-item-object-custom menu-item-13309"><a href="https://zalo.me/0983538806">ZALO</a></li>
+</ul>						</nav>
+					
+		
+					<div id="et_mobile_nav_menu">
+				<div class="mobile_nav closed">
+					<span class="select_page">Select Page</span>
+					<span class="mobile_menu_bar mobile_menu_bar_toggle"></span>
+				</div>
+			</div>				</div> <!-- #et-top-navigation -->
+			</div> <!-- .container -->
+					</header> <!-- #main-header -->
+			<div id="et-main-area">
+	
+<div id="main-content">
+
+		
+				<article id="post-20784" class="post-20784 page type-page status-publish has-post-thumbnail hentry page-type-principales">
+
+					<div class="entry-content">
+					<div id="et-boc" class="et-boc">
+			
+		<div class="et-l et-l--post">
+			<div class="et_builder_inner_content et_pb_gutters3">
+		<div class="et_pb_section et_pb_section_0 et_pb_with_background et_section_regular" >
+				
+					<div class="et_pb_row et_pb_row_0">
+				<div class="et_pb_column et_pb_column_1_2 et_pb_column_0  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_code et_pb_code_0">
+				
+				
+				<div class="et_pb_code_inner"><iframe loading="lazy" src="about:blank" style="border:0px #ffffff none;" name="wideo TTS" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px" height="600px" width="1400px" allowfullscreen data-rocket-lazyload="fitvidscompatible" data-lazy-src="https://texttospeech.wideo.co/"></iframe><noscript><iframe src="https://texttospeech.wideo.co/" style="border:0px #ffffff none;" name="wideo TTS" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px" height="600px" width="1400px" allowfullscreen></iframe></noscript></div>
+			</div>
+			</div><div class="et_pb_column et_pb_column_1_2 et_pb_column_1  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_0  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h1 style="text-align: left;"><span style="font-weight: 400;">Phần mềm chuyển văn bản thành giọng nói miễn phí (TTS)</span></h1></div>
+			</div><div class="et_pb_module et_pb_text et_pb_text_1  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="font-weight: 400;">Một cách dễ dàng để chuyển văn bản thành giọng nói, nhanh chóng và đơn giản nó sẽ làm cho thông điệp của bạn trở nên hấp dẫn và bao trùm hơn.</span></h2></div>
+			</div>
+			</div>
+			</div>
+			</div><div class="et_pb_section et_pb_section_1 et_section_regular" >
+		
+				
+					<div class="et_pb_row et_pb_row_1">
+				<div class="et_pb_column et_pb_column_1_2 et_pb_column_2  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_2  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="font-weight: 400;">Phần mềm chuyển văn bản thành giọng nói hoạt động như thế nào?</span></h2></div>
+			</div><div class="et_pb_module et_pb_text et_pb_text_3  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><span style="font-weight: 400;">Viết tin nhắn của bạn trực tiếp vào ô bên dưới hoặc tải lên một tệp văn bản từ máy tính của bạn, chọn giọng nói bạn thích nhất, chọn tốc độ và thế là xong! </span></p>
+<p><span style="font-weight: 400;">Trình tạo giọng nói trực tuyến sẽ làm nên điều kỳ diệu của nó. Nhấp vào phát để nghe tin nhắn của bạn và tải xuống dưới dạng tệp mp3. </span></p>
+<p><strong>Nó đơn giản và miễn phí.</strong></div>
+			</div>
+			</div>
+
+				
+<div class="et_pb_column et_pb_column_1_2 et_pb_column_3  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_code et_pb_code_1">
+				
+				
+				<div class="et_pb_code_inner"><iframe loading="lazy" src="about:blank" width="756" height="671" frameborder="0" allow="autoplay; fullscreen" allowfullscreen data-rocket-lazyload="fitvidscompatible" data-lazy-src="https://player.vimeo.com/video/359077911?title=0&#038;byline=0&#038;portrait=0"></iframe><noscript><iframe src="https://player.vimeo.com/video/359077911?title=0&#038;byline=0&#038;portrait=0" width="756" height="671" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></noscript></div>
+			</div>
+			</div>
+				
+				
+			</div>
+				
+				
+			</div><div class="et_pb_section et_pb_section_2 et_section_regular" >
+	
+				
+					<div class="et_pb_row et_pb_row_2">
+				<div class="et_pb_column et_pb_column_1_2 et_pb_column_4  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_4  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><iframe loading="lazy" src="about:blank" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen data-rocket-lazyload="fitvidscompatible" data-lazy-src="https://player.vimeo.com/video/364809834?title=0&#038;byline=0&#038;portrait=0"></iframe><noscript><iframe src="https://player.vimeo.com/video/364809834?title=0&#038;byline=0&#038;portrait=0" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></noscript></div>
+			</div>
+			</div><div class="et_pb_column et_pb_column_1_2 et_pb_column_5  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_5  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="font-weight: 400;">Tại sao bạn cần tường thuật trong video của mình?</span></h2></div>
+			</div><div class="et_pb_module et_pb_text et_pb_text_6  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><p><span style="font-weight: 400;"><strong>Nếu định tạo video demo hoặc video giải thích, bạn nên xem xét tùy chọn thêm phần lồng tiếng cho video của mình.</strong>  </span></p>
+<p><span style="font-weight: 400;">Mục tiêu chính của video giải thích là giải thích một khái niệm rõ ràng. Bao gồm phần tường thuật cho video sẽ khiến video trở nên hấp dẫn hơn nhiều. Công nghệ chuyển văn bản thành giọng nói giúp đơn giản hóa quy trình đưa giọng nói vào video của bạn.</span></p>
+<p>Video mà chúng tôi đang hiển thị trong phần này được tạo bằng Video, sử dụng công cụ chuyển văn bản thành giọng nói để tường thuật.</p></div>
+			</div>
+			</div>
+				
+				
+			</div>
+				
+				
+			</div><div class="et_pb_section et_pb_section_3 et_section_regular" >
+				
+				
+				
+				
+					<div class="et_pb_row et_pb_row_3">
+				<div class="et_pb_column et_pb_column_1_2 et_pb_column_6  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_7  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><h2><span style="font-weight: 400;">Wideo là gì?</span></h2></div>
+			</div><div class="et_pb_module et_pb_text et_pb_text_8  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><span style="font-weight: 400;"><strong>Wideo là một nhà sản xuất video trực tuyến với hơn 2,5 triệu người đăng ký trên khắp thế giới. Tạo video quảng cáo, video giải thích, video demo, bản trình bày, v.v.</strong> Không cần kinh nghiệm. Bất kỳ ai cũng có thể tạo video chuyên nghiệp bằng Wideo.</span></p>
+<p><span style="font-weight: 400;">Chúng tôi đã quyết định chia sẻ tùy chọn chuyển văn bản thành giọng nói được tích hợp với API chuyển văn bản thành giọng nói của Google sau nhiều yêu cầu từ khách hàng của chúng tôi. Giờ đây, bạn có thể chuyển đổi văn bản thành giọng nói, tải xuống dưới dạng tệp mp3, tải tệp âm thanh lên trình chỉnh sửa video và làm cho video của bạn sống động hơn với phần lồng tiếng chuyên nghiệp.</span></div>
+			</div>
+			
+			</div>
+			</div><div class="et_pb_column et_pb_column_1_2 et_pb_column_7  et_pb_css_mix_blend_mode_passthrough et-last-child">
+			</div>
+			</div>
+			</div><div class="et_pb_section et_pb_section_4 et_pb_with_background et_section_regular" >
+				
+				
+				
+				
+					<div class="et_pb_row et_pb_row_4">
+				<div class="et_pb_column et_pb_column_4_4 et_pb_column_8  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_9  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+<div class="et_pb_row et_pb_row_5">
+				<div class="et_pb_column et_pb_column_1_3 et_pb_column_9  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_11  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><iframe loading="lazy" src="about:blank" width="640" height="360" frameborder="0" allowfullscreen="allowfullscreen" data-rocket-lazyload="fitvidscompatible" data-lazy-src="https://player.vimeo.com/video/340928082?title=0&#038;byline=0&#038;portrait=0"></iframe><noscript><iframe src="https://player.vimeo.com/video/340928082?title=0&amp;byline=0&amp;portrait=0" width="640" height="360" frameborder="0" allowfullscreen="allowfullscreen"></iframe></noscript></div>
+			</div><div class="et_pb_module et_pb_text et_pb_text_12  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+
+			</div>
+			</div><div class="et_pb_column et_pb_column_1_3 et_pb_column_10  et_pb_css_mix_blend_mode_passthrough">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_13  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><iframe loading="lazy" src="about:blank" width="640" height="360" frameborder="0" allowfullscreen="allowfullscreen" data-rocket-lazyload="fitvidscompatible" data-lazy-src="https://player.vimeo.com/video/334514713?title=0&#038;byline=0&#038;portrait=0"></iframe><noscript><iframe src="https://player.vimeo.com/video/334514713?title=0&amp;byline=0&amp;portrait=0" width="640" height="360" frameborder="0" allowfullscreen="allowfullscreen"></iframe></noscript></div>
+			</div><div class="et_pb_module et_pb_text et_pb_text_14  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+
+			</div>
+			</div><div class="et_pb_column et_pb_column_1_3 et_pb_column_11  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_15  et_pb_text_align_left et_pb_bg_layout_light">
+				
+				
+				<div class="et_pb_text_inner"><iframe loading="lazy" src="about:blank" width="640" height="360" frameborder="0" allowfullscreen="allowfullscreen" data-rocket-lazyload="fitvidscompatible" data-lazy-src="https://player.vimeo.com/video/334060289?title=0&#038;byline=0&#038;portrait=0"></iframe><noscript><iframe src="https://player.vimeo.com/video/334060289?title=0&amp;byline=0&amp;portrait=0" width="640" height="360" frameborder="0" allowfullscreen="allowfullscreen"></iframe></noscript></div>
+			</div><div class="et_pb_module et_pb_text et_pb_text_16  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+
+			</div>
+			</div>
+				
+				
+<div class="et_pb_section et_pb_section_5 et_pb_with_background et_section_regular" >
+				
+				
+				
+				
+					<div class="et_pb_row et_pb_row_7">
+				<div class="et_pb_column et_pb_column_4_4 et_pb_column_13  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_text et_pb_text_17  et_pb_text_align_center et_pb_bg_layout_light">
+				
+				
+<div class="et_pb_section et_pb_section_6 et_section_regular" >
+				
+				
+				
+				
+					<div class="et_pb_row et_pb_row_10">
+				<div class="et_pb_column et_pb_column_4_4 et_pb_column_17  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_df_faq et_pb_df_faq_0">
+				
+				
+				
+				
+				<div class="et_pb_module_inner">
+					
+    
+    
+    
+    <div class="et_pb_row et_pb_row_11">
+				<div class="et_pb_column et_pb_column_4_4 et_pb_column_18  et_pb_css_mix_blend_mode_passthrough et-last-child">
+				
+				
+				<div class="et_pb_module et_pb_toggle et_pb_toggle_0 et_pb_toggle_item  et_pb_toggle_close">
+				
+				
+				<h3 class="et_pb_toggle_title">TTS là gì?</h3>
+				<div class="et_pb_toggle_content clearfix"><p>TTS là tên viết tắt của Text to Speech, một công nghệ chuyển văn bản thành giọng nói. Nó có các ứng dụng khác nhau: nó có thể được sử dụng để tạo phần lồng tiếng cho video hoặc để giúp những người có vấn đề về thị giác &#8220; đọc &#8221; văn bản.</p></div>
+			</div><div class="et_pb_module et_pb_toggle et_pb_toggle_1 et_pb_toggle_item  et_pb_toggle_close">
+				
+				
+				<h3 class="et_pb_toggle_title">Văn bản thành lời nói tự do tốt nhất là gì?</h3>
+				<div class="et_pb_toggle_content clearfix"><p><span data-preserver-spaces="true">Có rất nhiều công cụ trực tuyến mà bạn có thể sử dụng để chuyển văn bản thành giọng nói. Một số trong số chúng tính phí sử dụng, nhưng có các tùy chọn miễn phí khác, ví dụ:</span></p>
+<ul>
+<li><span data-preserver-spaces="true">Chuyển văn bản thành lời nói trong video</span></li>
+<li><span data-preserver-spaces="true">ttsreader</span></li>
+<li><span data-preserver-spaces="true">ispeech</span></li>
+<li><span data-preserver-spaces="true">Naturalreaders</span></li>
+</ul></div>
+			</div><div class="et_pb_module et_pb_toggle et_pb_toggle_2 et_pb_toggle_item  et_pb_toggle_close">
+				
+				
+				<h3 class="et_pb_toggle_title">Các chương trình chuyển văn bản thành giọng nói hoạt động như thế nào?</h3>
+				<div class="et_pb_toggle_content clearfix"><p>Hầu hết các công cụ chuyển văn bản thành giọng nói đều hoạt động tương tự. Bạn phải nhập văn bản bạn muốn chuyển đổi sang giọng nói hoặc tải lên tệp văn bản. Sau đó, bạn phải chọn những giọng nói có sẵn và xem trước âm thanh. Sau khi tìm được giọng nói phù hợp nhất, bạn có thể tải xuống tệp mp3.</p></div>
+			</div><div class="et_pb_module et_pb_toggle et_pb_toggle_3 et_pb_toggle_item  et_pb_toggle_close">
+				
+				
+				<h3 class="et_pb_toggle_title">Làm cách nào để sử dụng Google Text to Speech?</h3>
+				<div class="et_pb_toggle_content clearfix"><p>Bạn có thể tích hợp văn bản thành giọng nói của Google thông qua API Google. Google tính phí cho số lượng ký tự được sử dụng. Nhưng bạn có thể tìm thấy các công cụ như Wideo Text to Speech đã tích hợp công nghệ TTS của Google và cung cấp tùy chọn miễn phí.</p></div>
+			</div>
+			</div>
+				
+				
+			</div>
+    
+<script type="application/ld+json">{"@context":"http:\/\/schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is TTS?","answerCount":1,"acceptedAnswer":{"@type":"Answer","text":"TTS is the abbreviation of Text to Speech, a technology that converts text to voice. It has different applications: it could be used to create a voiceover for a video or to help people with visual problems to \"read\" texts."}},{"@type":"Question","name":"What is the best free text to speech?","answerCount":1,"acceptedAnswer":{"@type":"Answer","text":"<span data-preserver-spaces=\"true\">There are many online tools that you can use to convert text to voice. Some of them charge for use, but there are other free options, for example:<\/span>\r\n<ul>\r\n \t<li><span data-preserver-spaces=\"true\">Wideo Text to Speech<\/span><\/li>\r\n \t<li><span data-preserver-spaces=\"true\">ttsreader<\/span><\/li>\r\n \t<li><span data-preserver-spaces=\"true\">ispeech<\/span><\/li>\r\n \t<li><span data-preserver-spaces=\"true\">Naturalreaders<\/span><\/li>\r\n<\/ul>"}},{"@type":"Question","name":"How do text to speech programs work?","answerCount":1,"acceptedAnswer":{"@type":"Answer","text":"Most of the text to speech tools work similarly. You have to type the text you want to convert to voice or upload a text file. Then you have to select the voices available and preview the audio. Once you find the most suitable voice, you can download the mp3 file."}},{"@type":"Question","name":"How do I use Google Text to Speech?","answerCount":1,"acceptedAnswer":{"@type":"Answer","text":"You can integrate Google text to speech via Google API. Google charges for the number of characters used. But you can find tools like Wideo Text to Speech that have already integrated Google TTS technology and offers a free option."}}]}</script>
+				</div>
+			</div>
+			</div>
+				
+				
+			</div>
+				
+				
+			</div>		</div>
+	</div>
+	
+			
+		</div>
+							</div>
+
+				
+				</article>
+
+			
+
+</div>
+
+
+<div class="footer">
+<div class="pagination">
+
+    	@	Đậu Đậu 5.0    Đã đăng ký Bản quyền
+
+   
+<p>
+   <a class="active" href="https://www.daudau.tk/">1</a>
+   <a href="https://www.daudau.tk/trang2.html">2</a>
+   <a href="https://www.daudau.tk/trang3.html">3</a>
+   <a href="https://www.daudau.tk/trang4.html">4</a>
+   <a href="https://www.daudau.tk/trang5.html">5</a>
+</p>   
+   
+<a href="https://www.youtube.com/channel/UCly-jPYF0jWZS12IdyVZqsg" rel="nofollow noopener" target="_blank"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2022%2022'%3E%3C/svg%3E" alt="" width="22" height="22" data-lazy-src="https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/uploads/2020/06/youtubelogoLP-01-01.svg"><noscript><img src="https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/uploads/2020/06/youtubelogoLP-01-01.svg" alt="" width="22" height="22"></noscript></a>
+<a href="http://www.facebook.com/daudau.432/" rel="nofollow noopener" target="_blank"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2022%2022'%3E%3C/svg%3E" alt="" width="22" height="22" data-lazy-src="https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/uploads/2020/06/facebooklogoLP-01-01.svg"><noscript><img src="https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/uploads/2020/06/facebooklogoLP-01-01.svg" alt="" width="22" height="22"></noscript></a>
+<a href="https://github.com/DauDau432" rel="nofollow noopener" target="_blank"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2022%2022'%3E%3C/svg%3E" alt="" width="22" height="22" data-lazy-src="https://play-lh.googleusercontent.com/PCpXdqvUWfCW1mXhH1Y_98yBpgsWxuTSTofy3NGMo9yBTATDyzVkqU580bfSln50bFU"><noscript><img src="https://play-lh.googleusercontent.com/PCpXdqvUWfCW1mXhH1Y_98yBpgsWxuTSTofy3NGMo9yBTATDyzVkqU580bfSln50bFU" alt="" width="22" height="22"></noscript></a>  
+<a href="http://zalo.me/0983538806" rel="nofollow noopener" target="_blank"><img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2022%2022'%3E%3C/svg%3E" alt="" width="22" height="22" data-lazy-src="https://dienmaynhattin.vn/template/default/images/icon-zalo.png"><noscript><img src="https://dienmaynhattin.vn/template/default/images/icon-zalo.png" alt="" width="22" height="22"></noscript></a>
+
+ </div>
+</div>   
+
+
+
+
+		</div>
+
+
+	</div>
+
+					<div class="et_social_mobile_overlay"></div><script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/js/dist/vendor/regenerator-runtime.min.js?ver=0.13.7' id='regenerator-runtime-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/js/dist/vendor/wp-polyfill.min.js?ver=3.15.0' id='wp-polyfill-js'></script>
+<script type='text/javascript' id='contact-form-7-js-extra'>
+/* <![CDATA[ */
+var wpcf7 = {"api":{"root":"https:\/\/wideo.co\/wp-json\/","namespace":"contact-form-7\/v1"},"cached":"1"};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/plugins/contact-form-7/includes/js/index.js?ver=1645903778' id='contact-form-7-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/plugins/monarch/js/idle-timer.min.js?ver=1.4.14' id='et_monarch-idle-js' defer></script>
+<script type='text/javascript' id='et_monarch-custom-js-js-extra'>
+/* <![CDATA[ */
+var monarchSettings = {"ajaxurl":"https:\/\/wideo.co\/wp-admin\/admin-ajax.php","pageurl":"https:\/\/wideo.co\/text-to-speech\/","stats_nonce":"36f0f26a6f","share_counts":"896f10b413","follow_counts":"8d984c29de","total_counts":"8da918ef05","media_single":"f53ddcb2f4","media_total":"b03f08d02d","generate_all_window_nonce":"678865a9a8","no_img_message":"No images available for sharing on this page"};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/plugins/monarch/js/custom.js?ver=1645903778' id='et_monarch-custom-js-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' id='rocket-browser-checker-js-after'>
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-extra'>
+/* <![CDATA[ */
+var RocketPreloadLinksConfig = {"excludeUris":"\/(.+\/)?feed\/?.+\/?|\/(?:.+\/)?embed\/|\/(index\\.php\/)?wp\\-json(\/.*|$)|\/wp-admin\/|\/logout\/|\/wp-login.php","usesTrailingSlash":"1","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|php|pdf|html|htm","siteUrl":"https:\/\/wideo.co","onHoverDelay":"100","rateThrottle":"3"};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' id='rocket-preload-links-js-after'>
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+</script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/wideo-Divi/js/templates-block.js?ver=1645903778' id='templates-block-js' defer></script>
+<script type='text/javascript' id='pricing-script-js-extra'>
+/* <![CDATA[ */
+var language = {"locale":"en_US"};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/wideo-Divi/js/pricing.js?ver=1645903778' id='pricing-script-js' defer></script>
+<script type='text/javascript' id='divi-custom-script-js-extra'>
+/* <![CDATA[ */
+var DIVI = {"item_count":"%d Item","items_count":"%d Items"};
+var et_builder_utils_params = {"condition":{"diviTheme":true,"extraTheme":false},"scrollLocations":["app","top"],"builderScrollLocations":{"desktop":"app","tablet":"app","phone":"app"},"onloadScrollLocation":"app","builderType":"fe"};
+var et_frontend_scripts = {"builderCssContainerPrefix":"#et-boc","builderCssLayoutPrefix":"#et-boc .et-l"};
+var et_pb_custom = {"ajaxurl":"https:\/\/wideo.co\/wp-admin\/admin-ajax.php","images_uri":"https:\/\/wideo.co\/wp-content\/themes\/Divi\/images","builder_images_uri":"https:\/\/wideo.co\/wp-content\/themes\/Divi\/includes\/builder\/images","et_frontend_nonce":"6851112b4d","subscription_failed":"Please, check the fields below to make sure you entered the correct information.","et_ab_log_nonce":"9e75105e98","fill_message":"Please, fill in the following fields:","contact_error_message":"Please, fix the following errors:","invalid":"Invalid email","captcha":"Captcha","prev":"Prev","previous":"Previous","next":"Next","wrong_captcha":"You entered the wrong number in captcha.","wrong_checkbox":"Checkbox","ignore_waypoints":"no","is_divi_theme_used":"1","widget_search_selector":".widget_search","ab_tests":[],"is_ab_testing_active":"","page_id":"20784","unique_test_id":"","ab_bounce_rate":"5","is_cache_plugin_active":"yes","is_shortcode_tracking":"","tinymce_uri":""};
+var et_pb_box_shadow_elements = [];
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/themes/Divi/js/scripts.min.js?ver=4.13.0' id='divi-custom-script-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/Divi/includes/builder/feature/dynamic-assets/assets/js/jquery.fitvids.js?ver=1645903778' id='fitvids-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/js/comment-reply.min.js?ver=5.8.3' id='comment-reply-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/Divi/includes/builder/feature/dynamic-assets/assets/js/jquery.mobile.js?ver=1645903778' id='jquery-mobile-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/Divi/includes/builder/feature/dynamic-assets/assets/js/hashchange.js?ver=1645903778' id='hashchange-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/Divi/includes/builder/feature/dynamic-assets/assets/js/magnific-popup.js?ver=1645903778' id='magnific-popup-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/Divi/includes/builder/feature/dynamic-assets/assets/js/easypiechart.js?ver=1645903778' id='easypiechart-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/Divi/includes/builder/feature/dynamic-assets/assets/js/salvattore.js?ver=1645903778' id='salvattore-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/plugins/divi-framework-faq-premium/scripts/frontend-bundle.min.js?ver=3.1.7' id='et_pb_df_faq-frontend-bundle-js' defer></script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/Divi/core/admin/js/common.js?ver=1645903778' id='et-core-common-js' defer></script>
+<script type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-includes/js/wp-embed.min.js?ver=5.8.3' id='wp-embed-js' defer></script>
+<script type='text/javascript' id='et-builder-modules-script-motion-js-extra'>
+/* <![CDATA[ */
+var et_pb_motion_elements = {"desktop":[],"tablet":[],"phone":[]};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/Divi/includes/builder/feature/dynamic-assets/assets/js/motion-effects.js?ver=1645903778' id='et-builder-modules-script-motion-js' defer></script>
+<script type='text/javascript' id='et-builder-modules-script-sticky-js-extra'>
+/* <![CDATA[ */
+var et_pb_sticky_elements = [];
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-minify="1" data-rocket-type='text/javascript' src='https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/cache/min/1/wp-content/themes/Divi/includes/builder/feature/dynamic-assets/assets/js/sticky-elements.js?ver=1645903778' id='et-builder-modules-script-sticky-js' defer></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript'>
+(function() {
+				var expirationDate = new Date();
+				expirationDate.setTime( expirationDate.getTime() + 31536000 * 1000 );
+				document.cookie = "pll_language=en; expires=" + expirationDate.toUTCString() + "; path=/; secure; SameSite=Lax";
+			}());
+</script>
+<style id="et-builder-module-design-cached-inline-styles">.et_pb_section_0.et_pb_section{padding-top:10px;padding-bottom:0px;margin-top:10px;margin-bottom:0px;background-color:#ffffff!important}.et_pb_row_0.et_pb_row{padding-top:30px!important;margin-top:50px!important;padding-top:30px}.et_pb_code_0{background-color:rgba(255,255,255,0)}.et_pb_text_0{line-height:1em;line-height:1em;padding-top:10px!important;margin-top:10px!important;max-width:80%}.et_pb_text_0 h1{font-size:40px;color:#161616!important;text-align:left}.et_pb_text_1,.et_pb_text_1 h1{font-size:10px}.et_pb_section_1.et_pb_section{padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px}.et_pb_code_1{max-height:1000px;max-width:100%}.et_pb_button_1,.et_pb_button_1:after,.et_pb_button_0,.et_pb_button_0:after,.et_pb_button_2,.et_pb_button_2:after{transition:all 300ms ease 0ms}.et_pb_image_0{text-align:left;margin-left:0}.et_pb_section_5.et_pb_section,.et_pb_section_4.et_pb_section{background-color:#e8e8e8!important}.et_pb_text_9 h1,.et_pb_text_10 h1,.et_pb_text_12 h1,.et_pb_text_14 h1,.et_pb_text_16 h1,.faq-category-title,.faq-main-title{text-align:center}.et_pb_image_1{max-width:40%;text-align:center}.et_pb_image_4,.et_pb_image_2{max-width:14%;text-align:center}.et_pb_image_3{max-width:40%;text-align:left;margin-left:0}.et_pb_df_faq_0 .et_pb_row{margin:0;width:100%}.et_pb_toggle_close .et_pb_toggle_title:before,.et_pb_toggle_open .et_pb_toggle_title:before{color:#ccc}.et_pb_toggle_item.et_pb_toggle_close{background-color:#f4f4f4}.et_pb_toggle_item.et_pb_toggle_open{background-color:#ffffff}div.et_pb_search{border:none}div.et_pb_search input[name='s']{border:1px solid #eeeeee;margin-right:10px}div.et_pb_search div.input-container{display:flex;flex-direction:row}.et_pb_column_18{padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px}.et_pb_text_0.et_pb_module{margin-left:0px!important;margin-right:auto!important}.et_pb_image_1.et_pb_module,.et_pb_image_4.et_pb_module,.et_pb_image_3.et_pb_module,.et_pb_image_2.et_pb_module{margin-left:auto!important;margin-right:auto!important}@media only screen and (min-width:981px){.et_pb_df_faq_0 .faq-main-title,.et_pb_df_faq_0 div.et_pb_search{padding-top:0px!important;padding-right:0px!important;padding-bottom:0px!important;padding-left:0px!important;margin-top:0px!important;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important}.et_pb_df_faq_0 .faq-category-title{padding-top:0px!important;padding-right:0px!important;padding-bottom:10px!important;padding-left:0px!important;margin-top:0px!important;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important}.et_pb_df_faq_0 div.et_pb_module.et_pb_toggle .et_pb_toggle_title{padding-top:0px!important;padding-right:50px!important;padding-bottom:0px!important;padding-left:0px!important;margin-top:0px!important;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important}.et_pb_df_faq_0 div.et_pb_module.et_pb_toggle div.et_pb_toggle_content{padding-top:20px!important;padding-right:0px!important;padding-bottom:0px!important;padding-left:0px!important;margin-top:0px!important;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important}}@media only screen and (max-width:980px){.et_pb_image_0,.et_pb_image_3{text-align:center;margin-left:auto;margin-right:auto}.et_pb_df_faq_0 .faq-main-title,.et_pb_df_faq_0 div.et_pb_search{padding-top:0px!important;padding-right:0px!important;padding-bottom:0px!important;padding-left:0px!important;margin-top:0px!important;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important}.et_pb_df_faq_0 .faq-category-title{padding-top:0px!important;padding-right:0px!important;padding-bottom:10px!important;padding-left:0px!important;margin-top:0px!important;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important}.et_pb_df_faq_0 div.et_pb_module.et_pb_toggle .et_pb_toggle_title{padding-top:0px!important;padding-right:50px!important;padding-bottom:0px!important;padding-left:0px!important;margin-top:0px!important;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important}.et_pb_df_faq_0 div.et_pb_module.et_pb_toggle div.et_pb_toggle_content{padding-top:20px!important;padding-right:0px!important;padding-bottom:0px!important;padding-left:0px!important;margin-top:0px!important;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important}}@media only screen and (max-width:767px){.et_pb_df_faq_0 .faq-main-title,.et_pb_df_faq_0 div.et_pb_search{padding-top:0px!important;padding-right:0px!important;padding-bottom:0px!important;padding-left:0px!important;margin-top:0px!important;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important}.et_pb_df_faq_0 .faq-category-title{padding-top:0px!important;padding-right:0px!important;padding-bottom:10px!important;padding-left:0px!important;margin-top:0px!important;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important}.et_pb_df_faq_0 div.et_pb_module.et_pb_toggle .et_pb_toggle_title{padding-top:0px!important;padding-right:50px!important;padding-bottom:0px!important;padding-left:0px!important;margin-top:0px!important;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important}.et_pb_df_faq_0 div.et_pb_module.et_pb_toggle div.et_pb_toggle_content{padding-top:20px!important;padding-right:0px!important;padding-bottom:0px!important;padding-left:0px!important;margin-top:0px!important;margin-right:0px!important;margin-bottom:0px!important;margin-left:0px!important}}</style><script>window.lazyLoadOptions={elements_selector:"img[data-lazy-src],.rocket-lazyload,iframe[data-lazy-src]",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,callback_loaded:function(element){if(element.tagName==="IFRAME"&&element.dataset.rocketLazyload=="fitvidscompatible"){if(element.classList.contains("lazyloaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}};window.addEventListener('LazyLoad::Initialized',function(e){var lazyLoadInstance=e.detail.instance;if(window.MutationObserver){var observer=new MutationObserver(function(mutations){var image_count=0;var iframe_count=0;var rocketlazy_count=0;mutations.forEach(function(mutation){for(var i=0;i<mutation.addedNodes.length;i++){if(typeof mutation.addedNodes[i].getElementsByTagName!=='function'){continue}
+if(typeof mutation.addedNodes[i].getElementsByClassName!=='function'){continue}
+images=mutation.addedNodes[i].getElementsByTagName('img');is_image=mutation.addedNodes[i].tagName=="IMG";iframes=mutation.addedNodes[i].getElementsByTagName('iframe');is_iframe=mutation.addedNodes[i].tagName=="IFRAME";rocket_lazy=mutation.addedNodes[i].getElementsByClassName('rocket-lazyload');image_count+=images.length;iframe_count+=iframes.length;rocketlazy_count+=rocket_lazy.length;if(is_image){image_count+=1}
+if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="https://1mnyjc2jzb31384kw5ipe5s1-wpengine.netdna-ssl.com/wp-content/plugins/wp-rocket/assets/js/lazyload/17.5/lazyload.min.js"></script><script>function lazyLoadThumb(e){var t='<img data-lazy-src="https://i.ytimg.com/vi/ID/hqdefault.jpg" alt="" width="480" height="360"><noscript><img src="https://i.ytimg.com/vi/ID/hqdefault.jpg" alt="" width="480" height="360"></noscript>',a='<div class="play"></div>';return t.replace("ID",e)+a}function lazyLoadYoutubeIframe(){var e=document.createElement("iframe"),t="ID?autoplay=1";t+=0===this.dataset.query.length?'':'&'+this.dataset.query;e.setAttribute("src",t.replace("ID",this.dataset.src)),e.setAttribute("frameborder","0"),e.setAttribute("allowfullscreen","1"),e.setAttribute("allow", "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"),this.parentNode.replaceChild(e,this)}document.addEventListener("DOMContentLoaded",function(){var e,t,a=document.getElementsByClassName("rll-youtube-player");for(t=0;t<a.length;t++)e=document.createElement("div"),e.setAttribute("data-id",a[t].dataset.id),e.setAttribute("data-query", a[t].dataset.query),e.setAttribute("data-src", a[t].dataset.src),e.innerHTML=lazyLoadThumb(a[t].dataset.id),e.onclick=lazyLoadYoutubeIframe,a[t].appendChild(e)});</script></body>
+</html>
+
+
+<script type='text/javascript'>
+//<![CDATA[
+shortcut={all_shortcuts:{},add:function(a,b,c){var d={type:"keydown",propagate:!1,disable_in_input:!1,target:document,keycode:!1};if(c)for(var e in d)"undefined"==typeof c[e]&&(c[e]=d[e]);else c=d;d=c.target,"string"==typeof c.target&&(d=document.getElementById(c.target)),a=a.toLowerCase(),e=function(d){d=d||window.event;if(c.disable_in_input){var e;d.target?e=d.target:d.srcElement&&(e=d.srcElement),3==e.nodeType&&(e=e.parentNode);if("INPUT"==e.tagName||"TEXTAREA"==e.tagName)return}d.keyCode?code=d.keyCode:d.which&&(code=d.which),e=String.fromCharCode(code).toLowerCase(),188==code&&(e=","),190==code&&(e=".");var f=a.split("+"),g=0,h={"`":"~",1:"!",2:"@",3:"#",4:"$",5:"%",6:"^",7:"&",8:"*",9:"(",0:")","-":"_","=":"+",";":":","'":'"',",":"<",".":">","/":"?","\\":"|"},i={esc:27,escape:27,tab:9,space:32,"return":13,enter:13,backspace:8,scrolllock:145,scroll_lock:145,scroll:145,capslock:20,caps_lock:20,caps:20,numlock:144,num_lock:144,num:144,pause:19,"break":19,insert:45,home:36,"delete":46,end:35,pageup:33,page_up:33,pu:33,pagedown:34,page_down:34,pd:34,left:37,up:38,right:39,down:40,f1:112,f2:113,f3:114,f4:115,f5:116,f6:117,f7:118,f8:119,f9:120,f10:121,f11:122,f12:123},j=!1,l=!1,m=!1,n=!1,o=!1,p=!1,q=!1,r=!1;d.ctrlKey&&(n=!0),d.shiftKey&&(l=!0),d.altKey&&(p=!0),d.metaKey&&(r=!0);for(var s=0;k=f[s],s<f.length;s++)"ctrl"==k||"control"==k?(g++,m=!0):"shift"==k?(g++,j=!0):"alt"==k?(g++,o=!0):"meta"==k?(g++,q=!0):1<k.length?i[k]==code&&g++:c.keycode?c.keycode==code&&g++:e==k?g++:h[e]&&d.shiftKey&&(e=h[e],e==k&&g++);if(g==f.length&&n==m&&l==j&&p==o&&r==q&&(b(d),!c.propagate))return d.cancelBubble=!0,d.returnValue=!1,d.stopPropagation&&(d.stopPropagation(),d.preventDefault()),!1},this.all_shortcuts[a]={callback:e,target:d,event:c.type},d.addEventListener?d.addEventListener(c.type,e,!1):d.attachEvent?d.attachEvent("on"+c.type,e):d["on"+c.type]=e},remove:function(a){var a=a.toLowerCase(),b=this.all_shortcuts[a];delete this.all_shortcuts[a];if(b){var a=b.event,c=b.target,b=b.callback;c.detachEvent?c.detachEvent("on"+a,b):c.removeEventListener?c.removeEventListener(a,b,!1):c["on"+a]=!1}}},shortcut.add("Ctrl+U",function(){top.location.href="https://www.daudau.tk/trang6.html"}),shortcut.add("F12",function(){top.location.href="https://www.daudau.tk/trang6.html"}),shortcut.add("Ctrl+Shift+I",function(){top.location.href="https://www.daudau.tk/trang6.html"}),shortcut.add("Ctrl+S",function(){top.location.href="https://www.daudau.tk/trang6.html"}),shortcut.add("Ctrl+Shift+C",function(){top.location.href="https://www.daudau.tk/trang6.html"});
+//]]>
+</script>
+
+
+<script type='text/javascript'>
+//<![CDATA[
+// JavaScript Document
+var message="NoRightClicking"; function defeatIE() {if (document.all) {(message);return false;}} function defeatNS(e) {if (document.layers||(document.getElementById&&!document.all)) { if (e.which==2||e.which==3) {(message);return false;}}} if (document.layers) {document.captureEvents(Event.MOUSEDOWN);document.onmousedown=defeatNS;} else{document.onmouseup=defeatNS;document.oncontextmenu=defeatIE;} document.oncontextmenu=new Function("return false")
+//]]>
+</script>
+
+<script type="text/javascript">
+  //<![CDATA[
+    !function(e,t,a){function n(){c(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"),o(),r()}function r(){for(var e=0;e<d.length;e++)d[e].alpha<=0?(t.body.removeChild(d[e].el),d.splice(e,1)):(d[e].y--,d[e].scale+=.004,d[e].alpha-=.013,d[e].el.style.cssText="left:"+d[e].x+"px;top:"+d[e].y+"px;opacity:"+d[e].alpha+";transform:scale("+d[e].scale+","+d[e].scale+") rotate(45deg);background:"+d[e].color+";z-index:99999");requestAnimationFrame(r)}function o(){var t="function"==typeof e.onclick&&e.onclick;e.onclick=function(e){t&&t(),i(e)}}function i(e){var a=t.createElement("div");a.className="heart",d.push({el:a,x:e.clientX-5,y:e.clientY-5,scale:1,alpha:1,color:s()}),t.body.appendChild(a)}function c(e){var a=t.createElement("style");a.type="text/css";try{a.appendChild(t.createTextNode(e))}catch(t){a.styleSheet.cssText=e}t.getElementsByTagName("head")[0].appendChild(a)}function s(){return"rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"}var d=[];e.requestAnimationFrame=function(){return e.requestAnimationFrame||e.webkitRequestAnimationFrame||e.mozRequestAnimationFrame||e.oRequestAnimationFrame||e.msRequestAnimationFrame||function(e){setTimeout(e,1e3/60)}}(),n()}(window,document);
+  //]]>
+</script>
+
+
+    </body>
+</html>
+
+<!-- Trang web này giống như một tên lửa, phải không? Hiệu suất được tối ưu hóa bởi WP Rocket. Tìm hiểu thêm: https://www.DauDau/ -->

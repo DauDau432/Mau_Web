@@ -1,0 +1,161 @@
+    <!DOCTYPE html>
+    <html lang="vi">
+    <head>
+    <title>Đậu Đậu</title>
+    <meta charset="UTF-8">
+    <style>
+    * {
+    box-sizing: border-box;
+    }
+    
+     body {
+    font-family: Arial;
+    padding: 10px;
+    background: Black; 
+    }
+    
+    /* Tiêu đề / Tiêu đề blog */
+     .header {
+    font-size: 5px; 
+    text-align: center; 
+    color: White; 
+    }
+    
+     .header h1 {
+    font-size: 30px;
+    }
+    
+     .header p {
+    font-size: 16px;
+    }
+    
+    /* Tạo kiểu cho thanh điều hướng trên cùng */
+     .topnav {
+    overflow: hidden;
+    background-color: Red;
+    }
+    
+    /* Định dạng link điều hướng */
+     .topnav a {
+    float: left;
+    display: block;
+    color: White;
+    text-align: center;
+    padding: 6px 10px;
+    text-decoration: none;
+    }
+    
+    /* Thay đổi màu liên kết khi di chuột qua */
+     .topnav a:hover {
+    background-color: Olive;
+    color: white;
+    }
+    
+    /* Bố cục linh hoạt: Thanh menu điều hướng xếp chồng lên nhau thay vì cạnh nhau
+    khi màn hình có chiều rộng dưới 300px  */
+    @media screen and (max-width: 300px) {
+     .topnav a {
+    float: none;
+    width: 100%;
+    }
+    }
+    
+    img {
+    max-width:500px;
+    max-height:300px;
+    width: auto;
+    height: auto;
+    }
+    
+    #video_background {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1000;
+    overflow: hidden;
+    position: fixed;
+    object-fit: cover;
+    }
+    
+    /* thiết lập style cho thẻ a */
+     .pagination a {
+       color: White;
+       float: left;
+       padding: 8px 16px;
+       text-decoration: none;
+       transition: background-color .3s;
+     }
+    /* thiết lập style cho class active */
+     .pagination a.active {
+       background-color: dodgerblue;
+       color: Black;
+     }
+    /* thêm màu nền khi người dùng hover vào class không active */
+     .pagination a:hover:not(.active) {
+       background-color: #ddd;
+     }
+    
+    /* chân trang */ 
+     .footer {
+    overflow: hidden;
+    background-color: Red;
+    float: left;
+    display: block;
+    color: White;
+    text-align: center;
+    padding: 6px 10px;
+     width: 100%;
+    }
+    </style>
+    </head>
+    
+    <body>
+    <div class="header">
+    <h1><strong>Đậu Đậu</strong></h1>
+    <marquee behavior="alternate"><p><strong>trang cá nhân của đậu, nơi lưu giữ những khoảnh khắc đáng nhớ, và chia sẻ những thủ thuật mẹo hay trong công nghệ đời sống</strong></p></marquee>
+    </div>
+    
+    <div class="topnav">
+    <a href="https://www.youtube.com/channel/UCly-jPYF0jWZS12IdyVZqsg/featured"><strong>Youtube</strong></a>
+    <a href="https://www.facebook.com/daudau.432/"><strong>Facebook</strong></a>
+    <a href="https://github.com/DauDau432"><strong>Github</strong></a>
+    <a href="http://aulax432@gmail.com/"><strong>Gmail</strong></a>
+    <a href="http://zaloapp.com/qr/p/1wn6znkca2vb2"><strong>Zalo</strong></a>
+    </div>
+    
+    <video id="video_background" preload="auto" autoplay="true" loop="loop" muted volume="0">
+    <source src="https://player.vimeo.com/external/300877544.hd.mp4?s=94e713c9062e28b8d6cb58ea1e3216bac1c06d29&profile_id=174" type="video/webm"/>
+    <source src="https://player.vimeo.com/external/300877544.hd.mp4?s=94e713c9062e28b8d6cb58ea1e3216bac1c06d29&profile_id=174" type="video/ogg ogv"; codecs="theora, vorbis"/>
+    <source src="https://player.vimeo.com/external/300877544.hd.mp4?s=94e713c9062e28b8d6cb58ea1e3216bac1c06d29&profile_id=174" type="video/mp4"/>
+    </video>
+    
+    
+<script type='text/javascript'>
+//<![CDATA[
+shortcut={all_shortcuts:{},add:function(a,b,c){var d={type:"keydown",propagate:!1,disable_in_input:!1,target:document,keycode:!1};if(c)for(var e in d)"undefined"==typeof c[e]&&(c[e]=d[e]);else c=d;d=c.target,"string"==typeof c.target&&(d=document.getElementById(c.target)),a=a.toLowerCase(),e=function(d){d=d||window.event;if(c.disable_in_input){var e;d.target?e=d.target:d.srcElement&&(e=d.srcElement),3==e.nodeType&&(e=e.parentNode);if("INPUT"==e.tagName||"TEXTAREA"==e.tagName)return}d.keyCode?code=d.keyCode:d.which&&(code=d.which),e=String.fromCharCode(code).toLowerCase(),188==code&&(e=","),190==code&&(e=".");var f=a.split("+"),g=0,h={"`":"~",1:"!",2:"@",3:"#",4:"$",5:"%",6:"^",7:"&",8:"*",9:"(",0:")","-":"_","=":"+",";":":","'":'"',",":"<",".":">","/":"?","\\":"|"},i={esc:27,escape:27,tab:9,space:32,"return":13,enter:13,backspace:8,scrolllock:145,scroll_lock:145,scroll:145,capslock:20,caps_lock:20,caps:20,numlock:144,num_lock:144,num:144,pause:19,"break":19,insert:45,home:36,"delete":46,end:35,pageup:33,page_up:33,pu:33,pagedown:34,page_down:34,pd:34,left:37,up:38,right:39,down:40,f1:112,f2:113,f3:114,f4:115,f5:116,f6:117,f7:118,f8:119,f9:120,f10:121,f11:122,f12:123},j=!1,l=!1,m=!1,n=!1,o=!1,p=!1,q=!1,r=!1;d.ctrlKey&&(n=!0),d.shiftKey&&(l=!0),d.altKey&&(p=!0),d.metaKey&&(r=!0);for(var s=0;k=f[s],s<f.length;s++)"ctrl"==k||"control"==k?(g++,m=!0):"shift"==k?(g++,j=!0):"alt"==k?(g++,o=!0):"meta"==k?(g++,q=!0):1<k.length?i[k]==code&&g++:c.keycode?c.keycode==code&&g++:e==k?g++:h[e]&&d.shiftKey&&(e=h[e],e==k&&g++);if(g==f.length&&n==m&&l==j&&p==o&&r==q&&(b(d),!c.propagate))return d.cancelBubble=!0,d.returnValue=!1,d.stopPropagation&&(d.stopPropagation(),d.preventDefault()),!1},this.all_shortcuts[a]={callback:e,target:d,event:c.type},d.addEventListener?d.addEventListener(c.type,e,!1):d.attachEvent?d.attachEvent("on"+c.type,e):d["on"+c.type]=e},remove:function(a){var a=a.toLowerCase(),b=this.all_shortcuts[a];delete this.all_shortcuts[a];if(b){var a=b.event,c=b.target,b=b.callback;c.detachEvent?c.detachEvent("on"+a,b):c.removeEventListener?c.removeEventListener(a,b,!1):c["on"+a]=!1}}},shortcut.add("Ctrl+U",function(){top.location.href="https://www.daudau.tk/trang6.html"}),shortcut.add("F12",function(){top.location.href="https://www.daudau.tk/trang6.html"}),shortcut.add("Ctrl+Shift+I",function(){top.location.href="https://www.daudau.tk/trang6.html"}),shortcut.add("Ctrl+S",function(){top.location.href="https://www.daudau.tk/trang6.html"}),shortcut.add("Ctrl+Shift+C",function(){top.location.href="https://www.daudau.tk/trang6.html"});
+//]]>
+</script>
+
+<script type='text/javascript'>
+//<![CDATA[
+// JavaScript Document
+var message="NoRightClicking"; function defeatIE() {if (document.all) {(message);return false;}} function defeatNS(e) {if (document.layers||(document.getElementById&&!document.all)) { if (e.which==2||e.which==3) {(message);return false;}}} if (document.layers) {document.captureEvents(Event.MOUSEDOWN);document.onmousedown=defeatNS;} else{document.onmouseup=defeatNS;document.oncontextmenu=defeatIE;} document.oncontextmenu=new Function("return false")
+//]]>
+</script>
+    
+    
+    <div class="footer">
+      <div class="pagination">
+       <a href="https://www.daudau.tk/">1</a>
+       <a href="https://www.daudau.tk/trang2.html">2</a>
+       <a href="https://www.daudau.tk/trang3.html">3</a>
+       <a href="https://www.daudau.tk/trang4.html">4</a>
+       <a class="active" href="https://www.daudau.tk/trang5.html">5</a>
+     </div>
+    </div>
+    </body>
+    </html>
