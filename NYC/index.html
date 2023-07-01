@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYC như cái cc</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" type="text/javascript"></script>
+    <style>
+        /* Common styles */
+        span.required {
+            color: red;
+            margin-left: px;
+        }
+
+        /* Dark mode styles */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212;
+                color: #e0e0e0;
+            }
+
+            .form-control, .btn-secondary {
+                background-color: #2c2c2c;
+                color: #e0e0e0;
+                border: 2px solid #444;
+            }
+
+            .header {
+                color: #fafafa;
+            }
+        }
+
+        /* Light mode styles */
+        @media (prefers-color-scheme: light) {
+            body {
+                background-color: #f4f4f4;
+                color: #333;
+            }
+
+            .form-control, .btn-secondary {
+                background-color: #fff;
+                color: #333;
+                border: 1px solid #ccc;
+            }
+
+            .header {
+                color: #333;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh">
+        <div class="col-6 col-md-7">
+            <span style="background: url(&quot;http://i106.photobucket.com/albums/m280/YukioKenshin/chopnhay.gif&quot;) repeat scroll 0% 0% transparent; color:white; text-shadow: #00ff00 0px 0px 6px, #00ff00 0px 0px 5px, #00ff00 0px 0px 5px;font-size: 50px; font-weight: bold;"><font face="Times New Roman" size="7">Nhập tên của bạn or NYC</font></h1></span>
+            <form>
+                <div class="mb-3" id="customSNIDiv">
+                    <input type="text" id="customSNI" class="form-control" onkeypress="handleKeyPress(event)" />
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="checkName()">Check</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    function checkName() {
+        var name = document.getElementById('customSNI').value.toLowerCase();
+
+        if (!name) {
+            Swal.fire({
+                html: "<strong>Bạn chưa nhập gì!</strong>",
+                icon: "error",
+                confirmButtonText: "Đóng",
+            });
+        } else if (name === "nhu" || name === "như" || name === "thao" || name === "thảo") {
+            Swal.fire({
+                html: "<strong>Thôi Cút Cút</strong>",
+                icon: "success",
+                confirmButtonText: "Đóng",
+            });
+        } else {
+            window.location.href = "https://nyc.daukute.us/2.html";
+        }
+    }
+
+    function handleKeyPress(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            checkName();
+        }
+    }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" type="text/javascript"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="48ebef2e853bbe72a896508c-|49" defer></script>
+</body>
+</html>
