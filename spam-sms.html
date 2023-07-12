@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPAM SMS</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" type="text/javascript"></script>
+    <style>
+        /* Common styles */
+        span.required {
+            color: red;
+            margin-left: px;
+        }
+
+        /* Dark mode styles */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212;
+                color: #e0e0e0;
+            }
+
+            .form-control, .btn-secondary {
+                background-color: #2c2c2c;
+                color: #e0e0e0;
+                border: 2px solid #444;
+            }
+
+            .header {
+                color: #fafafa;
+            }
+        }
+
+        /* Light mode styles */
+        @media (prefers-color-scheme: light) {
+            body {
+                background-color: #f4f4f4;
+                color: #333;
+            }
+
+            .form-control, .btn-secondary {
+                background-color: #fff;
+                color: #333;
+                border: 1px solid #ccc;
+            }
+
+            .header {
+                color: #333;
+            }
+        }
+        
+        /* Background image */
+        body {
+            background-image: url("https://phapluat.tuoitrethudo.com.vn/stores/news_dataimages/nguyenthithanhhoa/032020/13/07/dt20200313075335.4617830.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh">
+        <div class="col-16 col-md-5">
+            <span style="background: url(&quot;http://i106.photobucket.com/albums/m280/YukioKenshin/chopnhay.gif&quot;) repeat scroll 0% 0% transparent; color:white; text-shadow: #00ff00 0px 0px 6px, #00ff00 0px 0px 5px, #00ff00 0px 0px 5px;font-size: 50px; font-weight: bold;"><font face="Times New Roman" size="6">Nhập số điện thoại cần spam</font></h1></span>
+            <form id="myForm">
+                <div class="mb-3" id="customSNIDiv">
+                    <input type="text" id="phoneInput" class="form-control" pattern="[0-9]+" title="Vui lòng nhập số điện thoại." required />
+                </div>
+                <button type="submit" class="btn btn-secondary">SPAM</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" type="text/javascript"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="48ebef2e853bbe72a896508c-|49" defer></script>
+
+    <script type="text/javascript">
+    document.getElementById("myForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Ngăn chặn việc gửi form mặc định
+
+        // Lấy giá trị từ ô input
+        var phone = document.getElementById("phoneInput").value;
+
+        // Kiểm tra số điện thoại
+        var blockedNumbers = ["0934562716", "0345841688", "0983538806"]; // Danh sách số điện thoại bị chặn
+        if (blockedNumbers.includes(phone)) {
+            Swal.fire({
+                html: "<strong>Số điện thoại này không thể spam.</strong>",
+                icon: "error",
+                confirmButtonText: "Đóng",
+            });
+            return;
+        }
+
+        // Kiểm tra số điện thoại hợp lệ
+        var phoneNumberRegex = /^[0-9]{10,11}$/;
+        if (!phone.match(phoneNumberRegex)) {
+            Swal.fire({
+                html: "<strong>Vui lòng nhập số điện thoại hợp lệ.</strong>",
+                icon: "error",
+                confirmButtonText: "Đóng",
+            });
+            return;
+        }
+
+        // Tạo yêu cầu HTTP GET đến API
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://apispam-1.nguyen-nhat-ba1.repl.co/?phone=" + phone, true);
+
+        // Gửi yêu cầu API
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Xử lý phản hồi từ API
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        Swal.fire({
+                            html: "<strong>Yêu cầu đã được gửi.</strong>",
+                            icon: "success",
+                            confirmButtonText: "Đóng",
+                        });
+                    } else {
+                        Swal.fire({
+                            html: "<strong>" + response.message + "</strong>",
+                            icon: "error",
+                            confirmButtonText: "Đóng",
+                        });
+                    }
+                } else {
+                    Swal.fire({
+                        html: "<strong>Gửi yêu cầu thất bại. Vui lòng thử lại sau.</strong>",
+                        icon: "error",
+                        confirmButtonText: "Đóng",
+                    });
+                }
+            }
+        };
+
+        xhr.send();
+    });
+    </script>
+</body>
+</html>
