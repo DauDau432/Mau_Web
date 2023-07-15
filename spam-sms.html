@@ -77,69 +77,102 @@
     <script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="48ebef2e853bbe72a896508c-|49" defer></script>
 
     <script type="text/javascript">
-    document.getElementById("myForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Ngăn chặn việc gửi form mặc định
+        // Kiểm tra xem đã có thông báo hiển thị hay chưa
+        var lastNotificationTime = localStorage.getItem("lastNotificationTime");
+        var currentTime = new Date().getTime();
 
-        // Lấy giá trị từ ô input
-        var phone = document.getElementById("phoneInput").value;
-
-        // Kiểm tra số điện thoại
-        var blockedNumbers = ["0934562716", "0345841688", "0983538806"]; // Danh sách số điện thoại bị chặn
-        if (blockedNumbers.includes(phone)) {
+        if (!lastNotificationTime || (currentTime - lastNotificationTime > 3 * 60 * 60 * 1000)) {
+            // Hiển thị thông báo với nút chuyển hướng
             Swal.fire({
-                html: "<strong>Số điện thoại này không thể spam.</strong>",
-                icon: "error",
-                confirmButtonText: "Đóng",
+                html: "<strong>Bấm vào nút dưới để vượt link1s</strong>",
+                icon: "info",
+                confirmButtonText: "Vượt link",
+                allowOutsideClick: false, // Không cho phép bấm ra ngoài để đóng thông báo
+                allowEscapeKey: false // Không cho phép nhấn phím Esc để đóng thông báo
+            }).then((result) => {
+                // Nếu người dùng bấm vào nút, chuyển hướng đến trang "https://link1s.com/KojdQmv"
+                if (result.isConfirmed) {
+                    window.location.href = "https://link1s.com/KojdQmv";
+                }
             });
-            return;
+
+            // Cập nhật thời điểm hiển thị cuối cùng
+            localStorage.setItem("lastNotificationTime", currentTime);
         }
 
-        // Kiểm tra số điện thoại hợp lệ
-        var phoneNumberRegex = /^[0-9]{10,11}$/;
-        if (!phone.match(phoneNumberRegex)) {
-            Swal.fire({
-                html: "<strong>Vui lòng nhập số điện thoại hợp lệ.</strong>",
-                icon: "error",
-                confirmButtonText: "Đóng",
-            });
-            return;
-        }
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Ngăn chặn việc gửi form mặc định
 
-        // Tạo yêu cầu HTTP GET đến API
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "https://apispam-1.nguyen-nhat-ba1.repl.co/?phone=" + phone, true);
+            // Lấy giá trị từ ô input
+            var phone = document.getElementById("phoneInput").value;
 
-        // Gửi yêu cầu API
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    // Xử lý phản hồi từ API
-                    var response = JSON.parse(xhr.responseText);
-                    if (response.success) {
-                        Swal.fire({
-                            html: "<strong>Yêu cầu đã được gửi.</strong>",
-                            icon: "success",
-                            confirmButtonText: "Đóng",
-                        });
+            // Kiểm tra số điện thoại
+            var blockedNumbers = ["0934562716", "0345841688", "0983538806"]; // Danh sách số điện thoại bị chặn
+            if (blockedNumbers.includes(phone)) {
+                Swal.fire({
+                    html: "<strong>Số điện thoại này không thể spam.</strong>",
+                    icon: "error",
+                    confirmButtonText: "Đóng",
+                    allowOutsideClick: false, // Không cho phép bấm ra ngoài để đóng thông báo
+                    allowEscapeKey: false // Không cho phép nhấn phím Esc để đóng thông báo
+                });
+                return;
+            }
+
+            // Kiểm tra số điện thoại hợp lệ
+            var phoneNumberRegex = /^[0-9]{10,11}$/;
+            if (!phone.match(phoneNumberRegex)) {
+                Swal.fire({
+                    html: "<strong>Vui lòng nhập số điện thoại hợp lệ.</strong>",
+                    icon: "error",
+                    confirmButtonText: "Đóng",
+                    allowOutsideClick: false, // Không cho phép bấm ra ngoài để đóng thông báo
+                    allowEscapeKey: false // Không cho phép nhấn phím Esc để đóng thông báo
+                });
+                return;
+            }
+
+            // Tạo yêu cầu HTTP GET đến API
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://apispam-1.nguyen-nhat-ba1.repl.co/?phone=" + phone, true);
+
+            // Gửi yêu cầu API
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        // Xử lý phản hồi từ API
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            Swal.fire({
+                                html: "<strong>Yêu cầu đã được gửi.</strong>",
+                                icon: "success",
+                                confirmButtonText: "Đóng",
+                                allowOutsideClick: false, // Không cho phép bấm ra ngoài để đóng thông báo
+                                allowEscapeKey: false // Không cho phép nhấn phím Esc để đóng thông báo
+                            });
+                        } else {
+                            Swal.fire({
+                                html: "<strong>" + response.message + "</strong>",
+                                icon: "error",
+                                confirmButtonText: "Đóng",
+                                allowOutsideClick: false, // Không cho phép bấm ra ngoài để đóng thông báo
+                                allowEscapeKey: false // Không cho phép nhấn phím Esc để đóng thông báo
+                            });
+                        }
                     } else {
                         Swal.fire({
-                            html: "<strong>" + response.message + "</strong>",
+                            html: "<strong>Gửi yêu cầu thất bại. Vui lòng thử lại sau.</strong>",
                             icon: "error",
                             confirmButtonText: "Đóng",
+                            allowOutsideClick: false, // Không cho phép bấm ra ngoài để đóng thông báo
+                            allowEscapeKey: false // Không cho phép nhấn phím Esc để đóng thông báo
                         });
                     }
-                } else {
-                    Swal.fire({
-                        html: "<strong>Gửi yêu cầu thất bại. Vui lòng thử lại sau.</strong>",
-                        icon: "error",
-                        confirmButtonText: "Đóng",
-                    });
                 }
-            }
-        };
+            };
 
-        xhr.send();
-    });
+            xhr.send();
+        });
     </script>
 </body>
 </html>
