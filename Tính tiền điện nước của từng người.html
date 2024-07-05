@@ -92,7 +92,7 @@
                     <input type="number" id="monthInput" class="form-control" min="1" max="12" required>
                 </div>
                 <div class="form-group">
-                    <label for="totalMoneyInput">Tổng tiền điện nước:</label>
+                    <label for="totalMoneyInput">Tổng tiền điện nước cả phòng:</label>
                     <input type="number" id="totalMoneyInput" class="form-control" min="0" step="0.01" required>
                 </div>
                 <div class="form-group">
@@ -150,7 +150,7 @@
             const waterFeePerPerson = 25000;
             const totalWaterFee = waterFeePerPerson * 3;
 
-            // Calculate remaining money
+            // Calculate remaining money after deducting water fee
             const remainingMoney = totalMoney - totalWaterFee;
 
             // Calculate money per day
@@ -167,6 +167,9 @@
             const loiTotalFee = loiElectricFee + waterFeePerPerson;
             const ducAnhTotalFee = ducAnhElectricFee + waterFeePerPerson;
 
+            // Calculate total room fee
+            const totalRoomFee = hieuTotalFee + loiTotalFee + ducAnhTotalFee;
+
             // Format currency function
             function formatCurrency(amount) {
                 return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
@@ -176,27 +179,30 @@
             Swal.fire({
                 html: `
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <strong>Tiền điện nước tháng ${month} của phòng 309</strong>
+                        <strong>Tiền điện nước tháng ${month} của phòng 309</strong><br>
+                        Tiền điện: ${formatCurrency(totalRoomFee - totalWaterFee)}<br>
+                        Tiền nước: ${formatCurrency(totalWaterFee)}<br>
+                        Tổng số tiền: ${formatCurrency(totalRoomFee)}
                     </div>
                     <hr>
                     <div style="text-align: left;">
                         <strong>Tổng tiền Hiếu phải trả:</strong><br>
                         Tiền điện: ${formatCurrency(hieuElectricFee)}<br>
-                        Tiền nước 25k: ${formatCurrency(waterFeePerPerson)}<br>
+                        Tiền nước: ${formatCurrency(waterFeePerPerson)}<br>
                         Tổng: ${formatCurrency(hieuTotalFee)}
                     </div>
                     <hr>
                     <div style="text-align: left;">
                         <strong>Tổng tiền Lợi phải trả:</strong><br>
                         Tiền điện: ${formatCurrency(loiElectricFee)}<br>
-                        Tiền nước 25k: ${formatCurrency(waterFeePerPerson)}<br>
+                        Tiền nước: ${formatCurrency(waterFeePerPerson)}<br>
                         Tổng: ${formatCurrency(loiTotalFee)}
                     </div>
                     <hr>
                     <div style="text-align: left;">
                         <strong>Tổng tiền Đức Anh phải trả:</strong><br>
                         Tiền điện: ${formatCurrency(ducAnhElectricFee)}<br>
-                        Tiền nước 25k: ${formatCurrency(waterFeePerPerson)}<br>
+                        Tiền nước: ${formatCurrency(waterFeePerPerson)}<br>
                         Tổng: ${formatCurrency(ducAnhTotalFee)}
                     </div>
                 `,
