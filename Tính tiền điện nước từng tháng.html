@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính tiền điện nước phòng 309</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10" type="text/javascript"></script>
+    <style>
+        /* Common styles */
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .content {
+            background-color: #2c2c2c;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+        /* Dark mode styles */
+        @media (prefers-color-scheme: dark) {
+            .content {
+                background-color: #2c2c2c;
+                color: #e0e0e0;
+            }
+        }
+
+        /* Light mode styles */
+        @media (prefers-color-scheme: light) {
+            body {
+                background-color: #f4f4f4;
+                color: #333;
+            }
+
+            .content {
+                background-color: #fff;
+                color: #333;
+                border: 1px solid #ccc;
+            }
+        }
+
+        /* Responsive layout */
+        @media screen and (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .content {
+                width: 90%;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Tính tiền điện nước phòng 309</h1>
+            <form id="myForm">
+                <div class="form-group">
+                    <label for="monthInput">Tháng (1-12):</label>
+                    <input type="number" id="monthInput" class="form-control" min="1" max="12" required>
+                </div>
+                <div class="form-group">
+                    <label for="totalMoneyInput">Tổng tiền điện nước:</label>
+                    <input type="number" id="totalMoneyInput" class="form-control" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="daysHieuInput">Số ngày Hiếu ở:</label>
+                    <input type="number" id="daysHieuInput" class="form-control" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="daysLoiInput">Số ngày Lợi ở:</label>
+                    <input type="number" id="daysLoiInput" class="form-control" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="daysDucAnhInput">Số ngày Đức Anh ở:</label>
+                    <input type="number" id="daysDucAnhInput" class="form-control" min="0" required>
+                </div>
+                <button type="submit" class="btn btn-secondary">Tính tiền điện nước</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" type="text/javascript"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="48ebef2e853bbe72a896508c-|49" defer></script>
+
+    <script type="text/javascript">
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get input values
+            const month = parseInt(document.getElementById("monthInput").value);
+            const totalMoney = parseFloat(document.getElementById("totalMoneyInput").value);
+            const daysHieu = parseInt(document.getElementById("daysHieuInput").value);
+            const daysLoi = parseInt(document.getElementById("daysLoiInput").value);
+            const daysDucAnh = parseInt(document.getElementById("daysDucAnhInput").value);
+
+            // Validate month input
+            if (month < 1 || month > 12) {
+                Swal.fire({
+                    text: "Tháng phải từ 1 đến 12.",
+                    icon: "error"
+                });
+                return;
+            }
+
+            // Validate days input
+            if (daysHieu < 0 || daysLoi < 0 || daysDucAnh < 0) {
+                Swal.fire({
+                    text: "Số ngày ở phải lớn hơn hoặc bằng 0.",
+                    icon: "error"
+                });
+                return;
+            }
+
+            // Calculate total water fee
+            const waterFeePerPerson = 25000;
+            const totalWaterFee = waterFeePerPerson * 3;
+
+            // Calculate remaining money
+            const remainingMoney = totalMoney - totalWaterFee;
+
+            // Calculate money per day
+            const totalDays = daysHieu + daysLoi + daysDucAnh;
+            const moneyPerDay = remainingMoney / totalDays;
+
+            // Calculate electric fees for each person
+            const hieuElectricFee = moneyPerDay * daysHieu;
+            const loiElectricFee = moneyPerDay * daysLoi;
+            const ducAnhElectricFee = moneyPerDay * daysDucAnh;
+
+            // Calculate total fees for each person
+            const hieuTotalFee = hieuElectricFee + waterFeePerPerson;
+            const loiTotalFee = loiElectricFee + waterFeePerPerson;
+            const ducAnhTotalFee = ducAnhElectricFee + waterFeePerPerson;
+
+            // Format currency function
+            function formatCurrency(amount) {
+                return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            }
+
+            // Display results in a central alert box
+            Swal.fire({
+                html: `
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <strong>Tiền điện nước tháng ${month} của phòng 309</strong>
+                    </div>
+                    <hr>
+                    <div style="text-align: left;">
+                        <strong>Tổng tiền Hiếu phải trả:</strong><br>
+                        Tiền điện: ${formatCurrency(hieuElectricFee)}<br>
+                        Tiền nước 25k: ${formatCurrency(waterFeePerPerson)}<br>
+                        Tổng: ${formatCurrency(hieuTotalFee)}
+                    </div>
+                    <hr>
+                    <div style="text-align: left;">
+                        <strong>Tổng tiền Lợi phải trả:</strong><br>
+                        Tiền điện: ${formatCurrency(loiElectricFee)}<br>
+                        Tiền nước 25k: ${formatCurrency(waterFeePerPerson)}<br>
+                        Tổng: ${formatCurrency(loiTotalFee)}
+                    </div>
+                    <hr>
+                    <div style="text-align: left;">
+                        <strong>Tổng tiền Đức Anh phải trả:</strong><br>
+                        Tiền điện: ${formatCurrency(ducAnhElectricFee)}<br>
+                        Tiền nước 25k: ${formatCurrency(waterFeePerPerson)}<br>
+                        Tổng: ${formatCurrency(ducAnhTotalFee)}
+                    </div>
+                `,
+                icon: "success",
+                confirmButtonText: "Đóng"
+            });
+        });
+    </script>
+</body>
+</html>
