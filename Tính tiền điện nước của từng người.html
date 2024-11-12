@@ -23,62 +23,87 @@
             height: 100vh;
         }
 
-        .content {
-            background-color: #2c2c2c;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            width: 80%;
-            max-width: 500px;
-            text-align: center;
-        }
-
         h1 {
             font-size: 24px;
+            text-align: center;
             margin-bottom: 20px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Giảm khoảng cách giữa các hàng */
+}
+
+.form-group label {
+    flex-basis: 35%; /* Đặt chiều rộng cho nhãn */
+    text-align: left;
+}
+
+.form-group .input-group,
+.form-group .form-control,
+.form-group select {
+    flex: 1; /* Đảm bảo tất cả các ô nhập liệu chiếm cùng không gian */
+}
+
+.input-group {
+    display: flex;
+    align-items: center; /* Giữ nhãn "VND" căn giữa theo chiều dọc với ô nhập */
+}
+
+.input-group .form-control {
+    flex: 1; /* Đảm bảo ô nhập liệu chiếm hết không gian còn lại trong nhóm input */
+}
+
+.input-group-text {
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    border: none;
+    font-weight: bold;
+    padding: 6px 10px;
+    height: 38px; /* Đặt chiều cao giống với ô nhập liệu */
+}
+
+.content {
+    background-color: #2c2c2c;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 500px; /* Thu hẹp chiều rộng của form */
+}
+
+.full-month-btn {
+    width: 80px; /* Đặt chiều rộng cố định cho nút "Cả tháng" */
+    height: 38px; /* Đặt chiều cao giống với ô nhập liệu */
+    font-size: 0.9em;
+    background-color: #495057;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.full-month-btn.active {
+    background-color: #007bff;
+}
+
+.btn {
+    width: 100%;
+    height: 40px; /* Đặt chiều cao của nút tính toán để phù hợp với form */
+}
+        
+
+        /* Remove number input arrows */
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
-        .btn {
-            width: 100%;
-        }
-
-        /* Dark mode styles */
-        @media (prefers-color-scheme: dark) {
-            .content {
-                background-color: #2c2c2c;
-                color: #e0e0e0;
-            }
-        }
-
-        /* Light mode styles */
-        @media (prefers-color-scheme: light) {
-            body {
-                background-color: #f4f4f4;
-                color: #333;
-            }
-
-            .content {
-                background-color: #fff;
-                color: #333;
-                border: 1px solid #ccc;
-            }
-        }
-
-        /* Responsive layout */
-        @media screen and (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                justify-content: center;
-            }
-
-            .content {
-                width: 90%;
-                max-width: none;
-            }
+        input[type=number] {
+            -moz-appearance: textfield; /* Firefox */
         }
     </style>
 </head>
@@ -88,25 +113,32 @@
             <h1>Tính tiền điện nước phòng 309</h1>
             <form id="myForm">
                 <div class="form-group">
-                    <label for="monthInput">Tháng (1-12):</label>
-                    <input type="number" id="monthInput" class="form-control" min="1" max="12" required>
+                    <label for="monthInput">Tháng:</label>
+                    <select id="monthInput" class="form-control" required>
+                        <option value="1">Tháng 1</option>
+                        <option value="2">Tháng 2</option>
+                        <option value="3">Tháng 3</option>
+                        <option value="4">Tháng 4</option>
+                        <option value="5">Tháng 5</option>
+                        <option value="6">Tháng 6</option>
+                        <option value="7">Tháng 7</option>
+                        <option value="8">Tháng 8</option>
+                        <option value="9">Tháng 9</option>
+                        <option value="10">Tháng 10</option>
+                        <option value="11">Tháng 11</option>
+                        <option value="12">Tháng 12</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="totalMoneyInput">Tổng tiền điện nước cả phòng:</label>
-                    <input type="number" id="totalMoneyInput" class="form-control" min="0" step="0.01" required>
+                    <div class="input-group">
+                        <input type="text" id="totalMoneyInput" class="form-control" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">VND</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="daysHieuInput">Số ngày Sơn ở:</label>
-                    <input type="number" id="daysHieuInput" class="form-control" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label for="daysLoiInput">Số ngày Lợi ở:</label>
-                    <input type="number" id="daysLoiInput" class="form-control" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label for="daysDucAnhInput">Số ngày Đức Anh ở:</label>
-                    <input type="number" id="daysDucAnhInput" class="form-control" min="0" required>
-                </div>
+                <div id="personFields"></div>
                 <button type="submit" class="btn btn-secondary">Tính tiền điện nước</button>
             </form>
         </div>
@@ -115,101 +147,146 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" type="text/javascript"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="48ebef2e853bbe72a896508c-|49" defer></script>
-
     <script type="text/javascript">
+        // Format currency function for input
+        const totalMoneyInput = document.getElementById("totalMoneyInput");
+        totalMoneyInput.addEventListener("input", function (e) {
+            // Remove any non-digit characters
+            let value = e.target.value.replace(/\D/g, "");
+            // Format with thousands separator
+            e.target.value = new Intl.NumberFormat("vi-VN").format(value);
+        });
+
+        // Load people data from JSON and generate input fields
+        async function loadPeople() {
+            const response = await fetch("people.json");
+            const people = await response.json();
+            const personFieldsContainer = document.getElementById("personFields");
+
+            people.forEach(person => {
+                const formGroup = document.createElement("div");
+                formGroup.className = "form-group days-group";
+
+                const label = document.createElement("label");
+                label.textContent = `Số ngày ${person.name} ở:`;
+                formGroup.appendChild(label);
+
+                const input = document.createElement("input");
+                input.type = "number";
+                input.id = `days${person.name}Input`;
+                input.className = "form-control";
+                input.min = "0";
+                input.required = true;
+                formGroup.appendChild(input);
+
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "full-month-btn";
+                button.textContent = "Cả tháng";
+                button.onclick = () => toggleFullMonth(input.id, button);
+                formGroup.appendChild(button);
+
+                personFieldsContainer.appendChild(formGroup);
+            });
+        }
+
+        loadPeople();
+
+        // Define days in each month
+        const daysInMonth = {
+            1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
+            7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31
+        };
+
         document.getElementById("myForm").addEventListener("submit", function(event) {
             event.preventDefault(); // Prevent form submission
 
             // Get input values
             const month = parseInt(document.getElementById("monthInput").value);
-            const totalMoney = parseFloat(document.getElementById("totalMoneyInput").value);
-            const daysHieu = parseInt(document.getElementById("daysHieuInput").value);
-            const daysLoi = parseInt(document.getElementById("daysLoiInput").value);
-            const daysDucAnh = parseInt(document.getElementById("daysDucAnhInput").value);
-
-            // Validate month input
-            if (month < 1 || month > 12) {
-                Swal.fire({
-                    text: "Tháng phải từ 1 đến 12.",
-                    icon: "error"
-                });
-                return;
-            }
-
-            // Validate days input
-            if (daysHieu < 0 || daysLoi < 0 || daysDucAnh < 0) {
-                Swal.fire({
-                    text: "Số ngày ở phải lớn hơn hoặc bằng 0.",
-                    icon: "error"
-                });
-                return;
-            }
+            const totalMoney = parseFloat(totalMoneyInput.value.replace(/\./g, ""));
+            const maxDays = daysInMonth[month];
 
             // Calculate total water fee
             const waterFeePerPerson = 25000;
-            const totalWaterFee = waterFeePerPerson * 3;
 
-            // Calculate remaining money after deducting water fee
-            const remainingMoney = totalMoney - totalWaterFee;
+            let totalDays = 0;
+            let personFees = [];
+            let totalWaterFee = 0;
+            let remainingMoney;
 
-            // Calculate money per day
-            const totalDays = daysHieu + daysLoi + daysDucAnh;
-            const moneyPerDay = remainingMoney / totalDays;
+            fetch("people.json")
+                .then(response => response.json())
+                .then(people => {
+                    people.forEach(person => {
+                        const daysStayed = parseInt(document.getElementById(`days${person.name}Input`).value);
+                        if (daysStayed > maxDays) {
+                            Swal.fire({
+                                text: `Số ngày ở của ${person.name} không thể vượt quá ${maxDays} ngày cho tháng đã chọn.`,
+                                icon: "error"
+                            });
+                            throw new Error("Invalid days input");
+                        }
+                        totalDays += daysStayed;
+                        totalWaterFee += waterFeePerPerson;
+                        personFees.push({ name: person.name, days: daysStayed });
+                    });
 
-            // Calculate electric fees for each person
-            const hieuElectricFee = moneyPerDay * daysHieu;
-            const loiElectricFee = moneyPerDay * daysLoi;
-            const ducAnhElectricFee = moneyPerDay * daysDucAnh;
+                    remainingMoney = totalMoney - totalWaterFee;
+                    const moneyPerDay = remainingMoney / totalDays;
 
-            // Calculate total fees for each person
-            const hieuTotalFee = hieuElectricFee + waterFeePerPerson;
-            const loiTotalFee = loiElectricFee + waterFeePerPerson;
-            const ducAnhTotalFee = ducAnhElectricFee + waterFeePerPerson;
+                    // Calculate fees for each person
+                    let results = personFees.map(person => {
+                        const electricFee = moneyPerDay * person.days;
+                        const totalFee = electricFee + waterFeePerPerson;
+                        return `<strong>Tổng tiền ${person.name} phải trả:</strong><br>
+                                Tiền điện: ${formatCurrency(electricFee)}<br>
+                                Tiền nước: ${formatCurrency(waterFeePerPerson)}<br>
+                                Tổng: ${formatCurrency(totalFee)}<br><hr>`;
+                    }).join("");
 
-            // Calculate total room fee
-            const totalRoomFee = hieuTotalFee + loiTotalFee + ducAnhTotalFee;
-
-            // Format currency function
-            function formatCurrency(amount) {
-                return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-            }
-
-            // Display results in a central alert box
-            Swal.fire({
-                html: `
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <strong>Tiền điện nước tháng ${month} của phòng 309</strong><br>
-                        Tiền điện: ${formatCurrency(totalRoomFee - totalWaterFee)}<br>
-                        Tiền nước: ${formatCurrency(totalWaterFee)}<br>
-                        Tổng số tiền: ${formatCurrency(totalRoomFee)}
-                    </div>
-                    <hr>
-                    <div style="text-align: left;">
-                        <strong>Tổng tiền Sơn phải trả:</strong><br>
-                        Tiền điện: ${formatCurrency(hieuElectricFee)}<br>
-                        Tiền nước: ${formatCurrency(waterFeePerPerson)}<br>
-                        Tổng: ${formatCurrency(hieuTotalFee)}
-                    </div>
-                    <hr>
-                    <div style="text-align: left;">
-                        <strong>Tổng tiền Lợi phải trả:</strong><br>
-                        Tiền điện: ${formatCurrency(loiElectricFee)}<br>
-                        Tiền nước: ${formatCurrency(waterFeePerPerson)}<br>
-                        Tổng: ${formatCurrency(loiTotalFee)}
-                    </div>
-                    <hr>
-                    <div style="text-align: left;">
-                        <strong>Tổng tiền Đức Anh phải trả:</strong><br>
-                        Tiền điện: ${formatCurrency(ducAnhElectricFee)}<br>
-                        Tiền nước: ${formatCurrency(waterFeePerPerson)}<br>
-                        Tổng: ${formatCurrency(ducAnhTotalFee)}
-                    </div>
-                `,
-                icon: "success",
-                confirmButtonText: "Đóng"
-            });
+                    Swal.fire({
+                        html: `<strong>Tiền điện nước tháng ${month} của phòng 309</strong><br>
+                               Tiền điện: ${formatCurrency(remainingMoney)}<br>
+                               Tiền nước: ${formatCurrency(totalWaterFee)}<br>
+                               Tổng số tiền: ${formatCurrency(totalMoney)}
+                               <hr>${results}`,
+                        icon: "success",
+                        confirmButtonText: "Đóng"
+                    });
+                });
         });
+
+        // Toggle full month selection
+        function toggleFullMonth(inputId, button) {
+            const input = document.getElementById(inputId);
+            const month = parseInt(document.getElementById("monthInput").value);
+            const maxDays = daysInMonth[month];
+
+            if (!button.classList.contains("active")) {
+                input.value = maxDays;
+                input.disabled = true;
+                button.classList.add("active");
+            } else {
+                input.value = '';
+                input.disabled = false;
+                button.classList.remove("active");
+            }
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+            return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        }
     </script>
 </body>
 </html>
+
+
+<!-- tạo file people.json chứa danh sách user
+[
+    { "name": "Sơn" },
+    { "name": "Lợi" },
+    { "name": "Đức Anh" },
+    { "name": "Trường" }
+] 
+-->
