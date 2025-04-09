@@ -1,0 +1,13 @@
+{
+  "thanhvien": [
+    { "ten": "Sơn" },
+    { "ten": "Lợi" },
+    { "ten": "Đức Anh" },
+    { "ten": "Trường" },
+    { "ten": "Nam Dương" }
+  ],
+  "chiphi": {
+    "nuoc": 25000,
+    "rac": 20000
+  }
+}
